@@ -1,0 +1,17 @@
+# ignore pycache files
+__pycache__/*
+*/__pycache__/*
+*/*/__pycache__/*
+*/*/*/__pycache__/*
+*/*/*/*/__pycache__/*
+*/*/*/*/*/__pycache__/*
+
+# ignore vscode folder
+.vscode/*
+
+# ignore data folder
+data/*
+output/*
+
+# ignore tmp folder
+tmp/*

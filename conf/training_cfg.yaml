@@ -1,0 +1,17 @@
+
+data_dir: ./data
+
+# data_dir/~
+train_data:  # training data location
+val_data:  # validation data location
+test_data:  # test data location
+
+batch_size: 4
+num_workers: 4
+
+init_lr: 1e-4
+loss: 1. * loss_type1 + 1e-4 * loss_type2
+max_epoch: 24
+optimizer: SGD
+
+resume: False
