@@ -20,6 +20,7 @@ class ProgressMsg():
         assert len(self.max_iter) == len(start_iter), 'start_iter should have same length with max variable.'
 
         self.start_iter = start_iter
+        self.current_iter = start_iter
         self.start_time = time.time()
         self.progress_time = self.start_time
 

@@ -1,24 +1,29 @@
-import logging
+import threading
+import logging, time, os
 
-from src.util.progress_msg import ProgressMsg
+from .progress_msg import ProgressMsg
+from .chart import LossChart
 
 
-class Logger:
-    def __init__(self, max_iter:tuple, log_dir:str=None, log_lvl:str='info', include_time:bool=False):
+class Logger(ProgressMsg):
+    def __init__(self, session_name:str, max_iter:tuple, log_dir:str=None, log_lvl:str='info', log_include_time:bool=False):
         '''
         Args:
-            max_iter (tuple)
-            log_dir (str)
+            session_name (str)
+            max_iter (tuple) : max iteration for progress
+            log_dir (str) : if None, no file out for logging
             log_lvl (str) : 'debug', 'info'
-            include_time (bool)
+            log_include_time (bool)
         '''
-        assert log_lvl in ['info', 'debug']
+        assert log_lvl in ['debug', 'info']
 
         # init progress message class
-        self.p_msg = ProgressMsg(max_iter)
+        ProgressMsg.__init__(self, max_iter)
+
+        # log setting
         self.log_dir = log_dir
         self.logging_lvl = logging.INFO if log_lvl=='info' else logging.DEBUG
-        self.include_time = include_time
+        self.log_include_time = log_include_time
 
         # set configs
         self.set_cfg()
@@ -30,11 +35,13 @@ class Logger:
             handlers=self.logging_handler
             )
 
+        self.session_name = session_name
+
     def set_cfg(self):
         self.logging_mode = 'w' # 'a': add, 'w': over write
 
         # logging format
-        if self.include_time:
+        if self.log_include_time:
             self.logging_format = '[%(asctime)s] %(message)s'
         else:
             self.logging_format = '%(message)s'
@@ -43,6 +50,14 @@ class Logger:
         self.logging_handler = [logging.StreamHandler()]
         if self.log_dir is not None: self.logging_handler.append(logging.FileHandler(filename=self.log_dir, mode=self.logging_mode))
 
+    def set_log_lvl(self, log_lvl):
+        self.logging_lvl = logging.INFO if log_lvl=='info' else logging.DEBUG
+        logging.basicConfig(
+            format=self.logging_format,
+            level=self.logging_lvl,
+            handlers=self.logging_handler
+            )
+
     def debug(self, txt):
         self.p_msg.line_reset()
         logging.debug(txt)
@@ -50,6 +65,13 @@ class Logger:
     def info(self, txt):
         self.p_msg.line_reset()
         logging.info(txt)
+
+    def clear_screen(self):
+        if os.name == 'nt': 
+            os.system('cls') 
+        else: 
+            os.system('clear') 
+
 
 # https://stackoverflow.com/questions/287871/how-to-print-colored-text-in-python
 # currently not using
@@ -63,15 +85,3 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-
-if __name__ == "__main__":
-    import time
-    lg = Logger((10, 10), 'log.log')
-
-    lg.p_msg.start((5, 0))
-
-    for i in range(5, 10):
-        for j in range(10):
-            lg.info(f'{i}, {j}')
-            lg.p_msg.print_prog_msg((i, j))
-            time.sleep(1)
