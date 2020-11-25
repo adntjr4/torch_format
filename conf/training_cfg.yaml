@@ -1,17 +1,28 @@
 
-data_dir: ./data
+model:
+  model_A: model
+  model_cfg: model_cfg.yaml
 
-# data_dir/~
-train_data:  # training data location
-val_data:  # validation data location
-test_data:  # test data location
+training:
+  dataset: BSD68
 
-batch_size: 4
-num_workers: 4
+  max_epoch: 24
+  batch_size: 4
+  crop_size: [64, 64]
+  aug: ['hflip', 'vflip', 'rot']
 
-init_lr: 1e-4
-loss: 1. * loss_type1 + 1e-4 * loss_type2
-max_epoch: 24
-optimizer: SGD
+  init_lr: 1e-4
+  loss: 1.*loss_type1+1e-4*loss_type2
+  optimizer: SGD
 
-resume: False
+validation:
+  dataset: BSD68
+  validation_start: 16
+  imsave: True
+
+output:
+  checkpoint_interval_epoch: 1
+  use_tensor_board: True
+  log_interval_iter: 100
+  log_file: True
+  log_lvl: 

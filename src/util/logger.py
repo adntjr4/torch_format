@@ -6,7 +6,7 @@ from .chart import LossChart
 
 
 class Logger(ProgressMsg):
-    def __init__(self, session_name:str, max_iter:tuple, log_dir:str=None, log_lvl:str='info', log_include_time:bool=False):
+    def __init__(self, max_iter:tuple, log_dir:str=None, log_lvl:str='info', log_include_time:bool=False):
         '''
         Args:
             session_name (str)
@@ -34,8 +34,6 @@ class Logger(ProgressMsg):
             level=self.logging_lvl,
             handlers=self.logging_handler
             )
-
-        self.session_name = session_name
 
     def set_cfg(self):
         self.logging_mode = 'w' # 'a': add, 'w': over write
