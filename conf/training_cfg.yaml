@@ -15,14 +15,24 @@ training:
   loss: 1.*loss_type1+1e-4*loss_type2
   optimizer: SGD
 
-validation:
-  dataset: BSD68
-  validation_start: 16
-  imsave: True
+  warmup: True
+  warmup_iter: 0
 
-output:
-  checkpoint_interval_epoch: 1
-  use_tensor_board: True
-  log_interval_iter: 100
-  log_file: True
-  log_lvl: 
+validation:
+  val: True
+  save_image: True
+  save_file: True
+  dataset: BSD68
+  start_epoch: 16
+  interval_epoch: 1
+  
+
+checkpoint:
+  save: True
+  start_epoch: 1
+  interval_epoch: 1
+
+log:
+  interval_iter: 100
+  save_file: True
+  save_debug: True

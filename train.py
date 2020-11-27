@@ -1,24 +1,33 @@
+import argparse
+
 import torch
 
-from src.
+from src.util.config_parse import ConfigParser
+from src.trainer.trainer import Trainer
 
 
-
-def main(config):
-    pass
-
-
-if __name__ == '__main__':
+def main():
+    # parsing configuration
     args = argparse.ArgumentParser()
-    args.add_argument('-c', '--config', default=None, type=str)
-    args.add_argument('-d', '--device', default=None, type=str)
-    args.add_argument('-r', '--resume', action='store_true')
+    args.add_argument('--session_name', default=None,  type=str)
+    args.add_argument('--config',  default=None,  type=str)
+    args.add_argument('--resume',  default=False, type=bool)
+    args.add_argument('--gpu',     default=None,  type=str)
+    args.add_argument('--thread',  default=4,     type=int)
 
     args = args.parse_args()
 
+    assert args.session is not None, 'session name required'
     assert args.config is not None, 'config file path is needed'
-    assert args.device is not None, 'config file path is needed'
 
-    config = ConfigParser(args)
+    cfg = ConfigParser(args)
 
-    main(config)
+    # intialize trainer
+    trainer = Trainer(cfg)
+
+    # train
+    trainer.train()
+
+
+if __name__ == '__main__':
+    main()
