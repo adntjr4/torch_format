@@ -1,19 +1,16 @@
-# project_name
+# pytorch starting format
 
-project description  
+staring project format for pytorch implementation
 
-there should be "output" folder for logout, checkpoint, validation results, etc.  
+there should be "output" folder or softlink
 also "dataset" folder for dataset files.  
 
+default CNN for MNIST classification is implemented.
 
-## torch_format TODO list
+## TODO list
 
-- output file 조건
-    1. 파일명은 어떤 실험인지 바로 알아야함.
-    2. 같은 실험도 구분되어야함.
-    3. 파일 안에는 checkpoint, 여러 결과, log를 포함해야함.
+- [ ] Use "start_epoch" and "interval_epoch"
+- [ ] Add test code
+- [ ] Add validation image out
+- [ ] Add tensor board output
 
-    - checkpoint
-    - img
-    - tboard
-    - log.log

@@ -3,14 +3,9 @@ import yaml, os
 class ConfigParser:
     def __init__(self, args):
         # load model configuration
-        with open(args.config) as f:
+        cfg_file = os.path.join('conf', args.config+'.yaml')
+        with open(cfg_file) as f:
             self.config = yaml.load(f, Loader=yaml.FullLoader)
-
-        # load train configuration
-        with open('./conf/training_cfg.yaml') as f:
-            tmp_config = yaml.load(f, Loader=yaml.FullLoader)
-        for key in tmp_config:
-            self.config[key] = tmp_config[key]
 
         # load argument
         for arg in args.__dict__:

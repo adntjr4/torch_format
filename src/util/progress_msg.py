@@ -3,7 +3,7 @@ import datetime
 import sys
 
 class ProgressMsg():
-    def __init__(self, max_iter, min_time_interval=1.):
+    def __init__(self, max_iter, min_time_interval=0.5):
         '''
         Args:
             max_iter : (max_epoch, max_data_length, ...)
@@ -65,25 +65,31 @@ class ProgressMsg():
         if time.time() - self.progress_time >= self.min_time_interval:
             pg_per, elapsed_str, remain_str, total_str = self.calculate_progress(current_iter)
 
-            txt = '>>> progress : %.2f%%, elapsed: %s, remaining: %s, total: %s \t\t\t\t\t' % (pg_per, elapsed_str, remain_str, total_str)
+            txt = '\033[K>>> progress : %.2f%%, elapsed: %s, remaining: %s, total: %s \t\t\t\t\t' % (pg_per, elapsed_str, remain_str, total_str)
 
             print(txt, end='\r')
 
             return txt.replace('\t', '')
         return
 
-    def line_reset(self):
-        sys.stdout.write("\033[K")
+    def get_start_msg(self):
+        return 'Start >>>'
 
-    def print_finish_msg(self):
-        self.line_reset()
+    def get_finish_msg(self):
         total = time.time() - self.start_time
         total_str = str(datetime.timedelta(seconds=int(total)))
-        txt = 'Finish >>> (total elapsed time : %s) \t\t\t\t\t' % total_str
-        print(txt)
-        return txt.replace('\t', '')
+        txt = 'Finish >>> (total elapsed time : %s)' % total_str
+        return txt
 
 if __name__ == '__main__':
+    import logging
+
+    logging.basicConfig(
+            format='%(message)s',
+            level=logging.INFO,
+            handlers=[logging.StreamHandler()]
+            )
+
     pp = ProgressMsg((10,10))
     ss = (0, 0)
 
@@ -93,7 +99,9 @@ if __name__ == '__main__':
 
     for i in range(0, 10):
         for j in range(10):
-            pp.print_prog_msg((i, j))
-            time.sleep(1)
-            pp.line_reset()
+            for k in range(10):
+                time.sleep(0.5)
+                pp.print_prog_msg((i, j))
+            logging.info('ttt')
+            
         

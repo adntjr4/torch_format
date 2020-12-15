@@ -15,6 +15,5 @@ dataset/*
 output
 output/*
 
-
 # ignore tmp folder
 tmp/*
